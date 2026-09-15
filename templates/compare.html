@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Compare Datasets</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ========================================= -->
+    <!-- Sidebar -->
+    <!-- ========================================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>📊 Sales Dashboard</h2>
+
+            <p>Cloud Analytics</p>
+
+        </div>
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="/dashboard">
+
+                    📈 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/preview">
+
+                    👁 Dataset Preview
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="/compare">
+
+                    📊 Compare Datasets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/history">
+
+                    📁 My Datasets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    🚪 Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ========================================= -->
+    <!-- Main Content -->
+    <!-- ========================================= -->
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+
+                    📊 Dataset Comparison
+
+                </h1>
+
+                <p>
+
+                    Compare two uploaded datasets and analyze their performance.
+
+                </p>
+
+            </div>
+
+        </header>
+                <!-- ========================================= -->
+        <!-- Dataset Selection -->
+        <!-- ========================================= -->
+
+        <section class="card">
+
+            <h2>
+
+                📂 Select Datasets
+
+            </h2>
+
+            <p style="margin-bottom:20px; color:#6b7280;">
+
+                Select any two uploaded datasets to compare their performance.
+
+            </p>
+
+            <form action="/compare" method="POST">
+
+                <div class="compare-grid">
+
+                    <!-- ============================= -->
+                    <!-- Dataset A -->
+                    <!-- ============================= -->
+
+                    <div class="card">
+
+                        <h3>
+
+                            Dataset A
+
+                        </h3>
+
+                        <br>
+
+                        <select
+                            name="dataset_a"
+                            required
+                        >
+
+                            <option value="">
+
+                                Select Dataset
+
+                            </option>
+
+                            {% for dataset in datasets %}
+
+                            <option
+
+                                value="{{ dataset[0] }}"
+
+                                {% if comparison and request.form.get("dataset_a") == dataset[0]|string %}
+                                    selected
+                                {% endif %}
+
+                            >
+
+                                {{ dataset[1] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <!-- ============================= -->
+                    <!-- Dataset B -->
+                    <!-- ============================= -->
+
+                    <div class="card">
+
+                        <h3>
+
+                            Dataset B
+
+                        </h3>
+
+                        <br>
+
+                        <select
+                            name="dataset_b"
+                            required
+                        >
+
+                            <option value="">
+
+                                Select Dataset
+
+                            </option>
+
+                            {% for dataset in datasets %}
+
+                            <option
+
+                                value="{{ dataset[0] }}"
+
+                                {% if comparison and request.form.get("dataset_b") == dataset[0]|string %}
+                                    selected
+                                {% endif %}
+
+                            >
+
+                                {{ dataset[1] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button type="submit">
+
+                    📊 Compare Datasets
+
+                </button>
+
+            </form>
+
+        </section>
+                <!-- ========================================= -->
+        <!-- Executive Comparison Summary -->
+        <!-- ========================================= -->
+
+        {% if comparison %}
+
+        <br>
+
+        <section class="card">
+
+            <h2>
+
+                📌 Comparison Summary
+
+            </h2>
+
+            <div class="summary-grid">
+
+                <div class="summary-item">
+
+                    <span class="summary-label">
+
+                        💰 Sales Growth
+
+                    </span>
+
+                    <span class="summary-value">
+
+                        {{ comparison.growth.sales }}
+
+                    </span>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span class="summary-label">
+
+                        💲 Profit Growth
+
+                    </span>
+
+                    <span class="summary-value">
+
+                        {{ comparison.growth.profit }}
+
+                    </span>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span class="summary-label">
+
+                        🛒 Orders Growth
+
+                    </span>
+
+                    <span class="summary-value">
+
+                        {{ comparison.growth.orders }}
+
+                    </span>
+
+                </div>
+
+                <div class="summary-item">
+
+                    <span class="summary-label">
+
+                        📦 Quantity Growth
+
+                    </span>
+
+                    <span class="summary-value">
+
+                        {{ comparison.growth.quantity }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <br>
+        <!-- ========================================= -->
+<!-- Comparison Charts -->
+<!-- ========================================= -->
+
+<div class="card">
+
+    <h2>
+
+        📈 Monthly Sales Comparison
+
+    </h2>
+
+    <div class="chart-container">
+
+        <canvas id="salesCompareChart"></canvas>
+
+    </div>
+
+</div>
+
+<br>
+
+<div class="card">
+
+    <h2>
+
+        💰 Monthly Profit Comparison
+
+    </h2>
+
+    <div class="chart-container">
+
+        <canvas id="profitCompareChart"></canvas>
+
+    </div>
+
+</div>
+
+<br>
+
+        <!-- ========================================= -->
+        <!-- Comparison Table -->
+        <!-- ========================================= -->
+
+        <section class="card">
+
+            <h2>
+
+                📊 Performance Comparison
+
+            </h2>
+
+            <br>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Metric</th>
+
+                        <th>Dataset A</th>
+
+                        <th>Dataset B</th>
+
+                        <th>Growth</th>
+
+                        <th>Winner</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <!-- Sales -->
+
+                    <tr>
+
+                        <td>💰 Total Sales</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_a.sales) }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_b.sales) }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.growth.sales }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.winner.sales }}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>🛒 Total Orders</td>
+
+                        <td>{{ comparison.dataset_a.orders }}</td>
+
+                        <td>{{ comparison.dataset_b.orders }}</td>
+
+                        <td>{{ comparison.growth.orders }}</td>
+
+                        <td>{{ comparison.winner.orders }}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📦 Quantity Sold</td>
+
+                        <td>{{ comparison.dataset_a.quantity }}</td>
+
+                        <td>{{ comparison.dataset_b.quantity }}</td>
+
+                        <td>{{ comparison.growth.quantity }}</td>
+
+                        <td>{{ comparison.winner.quantity }}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>💵 Average Order Value</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_a.average_order) }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_b.average_order) }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>
+
+                            {% if comparison.dataset_a.average_order > comparison.dataset_b.average_order %}
+
+                                Dataset A
+
+                            {% elif comparison.dataset_b.average_order > comparison.dataset_a.average_order %}
+
+                                Dataset B
+
+                            {% else %}
+
+                                Same
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📈 Highest Sale</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_a.highest_sale) }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_b.highest_sale) }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>
+
+                            {% if comparison.dataset_a.highest_sale > comparison.dataset_b.highest_sale %}
+
+                                Dataset A
+
+                            {% elif comparison.dataset_b.highest_sale > comparison.dataset_a.highest_sale %}
+
+                                Dataset B
+
+                            {% else %}
+
+                                Same
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+                                        <tr>
+
+                        <td>💲 Total Profit</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_a.profit) }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_b.profit) }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.growth.profit }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.winner.profit }}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📊 Average Profit</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_a.average_profit) }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(comparison.dataset_b.average_profit) }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>
+
+                            {% if comparison.dataset_a.average_profit > comparison.dataset_b.average_profit %}
+
+                                Dataset A
+
+                            {% elif comparison.dataset_b.average_profit > comparison.dataset_a.average_profit %}
+
+                                Dataset B
+
+                            {% else %}
+
+                                Same
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📈 Profit Margin</td>
+
+                        <td>
+
+                            {{ comparison.dataset_a.profit_margin }} %
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.dataset_b.profit_margin }} %
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>
+
+                            {% if comparison.dataset_a.profit_margin > comparison.dataset_b.profit_margin %}
+
+                                Dataset A
+
+                            {% elif comparison.dataset_b.profit_margin > comparison.dataset_a.profit_margin %}
+
+                                Dataset B
+
+                            {% else %}
+
+                                Same
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>🏆 Best Product</td>
+
+                        <td>
+
+                            {{ comparison.dataset_a.best_product }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.dataset_b.best_product }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>-</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📉 Worst Product</td>
+
+                        <td>
+
+                            {{ comparison.dataset_a.worst_product }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.dataset_b.worst_product }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>-</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>🥇 Best Category</td>
+
+                        <td>
+
+                            {{ comparison.dataset_a.best_category }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.dataset_b.best_category }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>-</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>📂 Worst Category</td>
+
+                        <td>
+
+                            {{ comparison.dataset_a.worst_category }}
+
+                        </td>
+
+                        <td>
+
+                            {{ comparison.dataset_b.worst_category }}
+
+                        </td>
+
+                        <td>-</td>
+
+                        <td>-</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+</div>
+<script>
+
+const compareSalesLabels = {{ sales_labels|tojson }};
+
+const compareSalesA = {{ sales_a|tojson }};
+
+const compareSalesB = {{ sales_b|tojson }};
+
+const compareProfitLabels = {{ profit_labels|tojson }};
+
+const compareProfitA = {{ profit_a|tojson }};
+
+const compareProfitB = {{ profit_b|tojson }};
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='compare.js') }}"></script>
+
+</body>
+
+</html>

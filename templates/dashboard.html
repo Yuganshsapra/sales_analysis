@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sales Analytics Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================================= -->
+    <!-- Sidebar -->
+    <!-- ================================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>📊 Sales Dashboard</h2>
+
+            <p>Cloud Analytics</p>
+
+        </div>
+
+        <ul class="menu">
+
+            <li class="active">
+
+                <a href="/dashboard">
+
+                    📈 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/history">
+
+                    📁 My Datasets
+
+                </a>
+
+            </li>
+            <li>
+
+                <a href="/compare">
+
+                    📊 Compare Datasets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    🚪 Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ================================= -->
+    <!-- Main Content -->
+    <!-- ================================= -->
+
+    <div class="main-content">
+
+        <!-- ================================= -->
+        <!-- Header -->
+        <!-- ================================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Sales Analytics Dashboard</h1>
+
+                <p>
+
+                    Cloud Based Sales Intelligence Platform
+
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">
+
+                    {{ user[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+
+                        {{ user }}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+
+                        Logged In
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ================================= -->
+        <!-- Upload Success -->
+        <!-- ================================= -->
+
+        {% if upload_status %}
+
+        <div class="success-box">
+
+            <h3>✅ Upload Successful</h3>
+
+            <p>
+
+                <strong>File :</strong>
+
+                {{ upload_status.file_name }}
+
+            </p>
+
+            <p>
+
+                <strong>Dataset ID :</strong>
+
+                {{ upload_status.dataset_id }}
+
+            </p>
+
+            <p>
+
+                <strong>Rows :</strong>
+
+                {{ upload_status.total_rows }}
+
+            </p>
+
+            <p>
+
+                <strong>Columns :</strong>
+
+                {{ upload_status.total_columns }}
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+        <!-- ================================= -->
+        <!-- Dashboard Filters -->
+        <!-- ================================= -->
+
+        <section class="card">
+
+            <h2>🔍 Dashboard Filters</h2>
+
+            <form
+                action="/dashboard"
+                method="GET"
+                class="filter-form"
+            >
+
+                <div class="filter-grid">
+
+                    <div class="filter-group">
+
+                        <label>Category</label>
+
+                        <select
+                            id="category"
+                            name="category"
+                        >
+
+                            <option value="">All Categories</option>
+
+                            {% for category in categories %}
+
+                            <option
+                                value="{{ category }}"
+                                {% if category == selected_category %}
+                                selected
+                                {% endif %}
+                            >
+
+                                {{ category }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label>Product</label>
+
+                        <select
+                            id="product"
+                            name="product"
+                        >
+
+                            <option value="">All Products</option>
+
+                            {% for product in products %}
+
+                            <option
+                                value="{{ product }}"
+                                {% if product == selected_product %}
+                                selected
+                                {% endif %}
+                            >
+
+                                {{ product }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+                                        <div class="filter-group">
+
+                        <label>
+
+                            Start Date
+
+                        </label>
+
+                        <input
+                            type="date"
+                            name="start_date"
+                            value="{{ start_date }}"
+                        >
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <label>
+
+                            End Date
+
+                        </label>
+
+                        <input
+                            type="date"
+                            name="end_date"
+                            value="{{ end_date }}"
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="filter-buttons">
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+
+                        Apply Filters
+
+                    </button>
+
+                    <a href="/dashboard">
+
+                        <button
+                            type="button"
+                            class="secondary-btn"
+                        >
+
+                            Reset
+
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+<!-- ================================= -->
+<!-- Performance Summary -->
+<!-- ================================= -->
+
+<section class="card">
+
+    <h2>📌 Performance Summary</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                📈 Sales Performance
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.sales_status }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                💹 Profitability
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.profit_status }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                🏆 Best Product
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.best_product }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                🥇 Best Category
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.best_category }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                💰 Average Order Value
+
+            </span>
+
+            <span class="summary-value">
+
+                ₹ {{ "{:,.2f}".format(performance.average_order_value) }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                📦 Total Orders
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ "{:,}".format(performance.total_orders) }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                📂 Categories
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.total_categories }}
+
+            </span>
+
+        </div>
+
+        <div class="summary-item">
+
+            <span class="summary-label">
+
+                📁 Current Dataset
+
+            </span>
+
+            <span class="summary-value">
+
+                {{ performance.dataset_name }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+       <!-- ================================= -->
+<!-- SALES OVERVIEW -->
+<!-- ================================= -->
+
+<h2 class="section-title">📊 Sales Overview</h2>
+
+<div class="kpi-container">
+
+    <div class="kpi-card">
+
+        <h3>🛒 Total Orders</h3>
+
+        <h2>{{ "{:,}".format(kpis.total_orders) }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>💰 Total Sales</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.total_sales) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>📈 Highest Sale</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.highest_sale) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>📉 Lowest Sale</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.lowest_sale) }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- PROFIT OVERVIEW -->
+<!-- ================================= -->
+
+<h2 class="section-title">💰 Profit Overview</h2>
+
+<div class="kpi-container">
+
+    <div class="kpi-card">
+
+        <h3>💲 Total Profit</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.total_profit) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>🚀 Highest Profit</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.highest_profit) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>📉 Lowest Profit</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.lowest_profit) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>📊 Average Profit</h3>
+
+        <h2>
+
+            ₹ {{ "{:,.2f}".format(kpis.average_profit) }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- PRODUCT & CATEGORY OVERVIEW -->
+<!-- ================================= -->
+
+<h2 class="section-title">
+
+    📦 Product & Category Overview
+
+</h2>
+
+<div class="kpi-container">
+
+    <div class="kpi-card">
+
+        <h3>🏆 Best Product</h3>
+
+        <h2>
+
+            {{ kpis.best_product }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>⚠ Worst Product</h3>
+
+        <h2>
+
+            {{ kpis.worst_product }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>🥇 Best Category</h3>
+
+        <h2>
+
+            {{ kpis.best_category }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <h3>📉 Worst Category</h3>
+
+        <h2>
+
+            {{ kpis.worst_category }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+        <!-- ================================= -->
+        <!-- Main Grid -->
+        <!-- ================================= -->
+
+        <div class="content-grid">
+
+            <!-- ================================= -->
+            <!-- Left Column -->
+            <!-- ================================= -->
+
+            <div class="left-column">
+                <!-- ================================= -->
+<!-- Monthly Sales Trend -->
+<!-- ================================= -->
+
+<section class="card">
+
+    <h2>📈 Monthly Sales Trend</h2>
+
+    <div class="chart-container">
+
+        <canvas id="monthlyChart"></canvas>
+
+    </div>
+
+</section>
+
+                <!-- ================================= -->
+                <!-- Product Sales Chart -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        📊 Top 10 Products by Sales
+
+                    </h2>
+
+                    <div class="chart-container">
+
+                        <canvas id="salesChart"></canvas>
+
+                    </div>
+
+                </section>
+
+                <!-- ================================= -->
+                <!-- Category Sales Chart -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        🥧 Sales by Category
+
+                    </h2>
+
+                    <div class="chart-container">
+
+                        <canvas id="categoryChart"></canvas>
+
+                    </div>
+
+                </section>
+                                <!-- ================================= -->
+                <!-- Top Selling Products -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        🏆 Top Selling Products
+
+                    </h2>
+
+                    {% if top_products %}
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Rank</th>
+
+                                <th>Product</th>
+
+                                <th>Total Sales</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for product in top_products %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ loop.index }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ product[0] }}
+
+                                </td>
+
+                                <td>
+
+                                    ₹ {{ "{:,.2f}".format(product[1]) }}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    {% else %}
+
+                    <p>
+
+                        No Product Data Available.
+
+                    </p>
+
+                    {% endif %}
+
+                </section>
+
+            </div>
+
+            <!-- ================================= -->
+            <!-- Right Column -->
+            <!-- ================================= -->
+
+            <div class="right-column">
+
+                <!-- ================================= -->
+                <!-- Current Dataset -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        📁 Current Dataset
+
+                    </h2>
+
+                    {% if latest_upload %}
+
+                    <table class="info-table">
+
+                        <tr>
+
+                            <th>
+
+                                File Name
+
+                            </th>
+
+                            <td>
+
+                                {{ latest_upload[1] }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Dataset ID
+
+                            </th>
+
+                            <td>
+
+                                {{ latest_upload[2] }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Total Rows
+
+                            </th>
+
+                            <td>
+
+                                {{ latest_upload[3] }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Total Columns
+
+                            </th>
+
+                            <td>
+
+                                {{ latest_upload[4] }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Uploaded On
+
+                            </th>
+
+                            <td>
+
+                                {{ latest_upload[5] }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <hr>
+
+                    <h3>
+
+                        Active Filters
+
+                    </h3>
+
+                    <table class="info-table">
+
+                        <tr>
+
+                            <th>
+
+                                Category
+
+                            </th>
+
+                            <td>
+
+                                {{ selected_category if selected_category else "All" }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Product
+
+                            </th>
+
+                            <td>
+
+                                {{ selected_product if selected_product else "All" }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Start Date
+
+                            </th>
+
+                            <td>
+
+                                {{ start_date if start_date else "-" }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                End Date
+
+                            </th>
+
+                            <td>
+
+                                {{ end_date if end_date else "-" }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <br>
+
+                    <a href="/history">
+
+                        <button class="primary-btn">
+
+                            📂 Open Existing Dataset
+
+                        </button>
+
+                    </a>
+
+                    {% else %}
+
+                    <p>
+
+                        No Dataset Uploaded Yet.
+
+                    </p>
+
+                    {% endif %}
+
+                </section>
+                                <!-- ================================= -->
+                <!-- Upload CSV -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        ⬆ Upload Sales CSV
+
+                    </h2>
+
+                    <form
+                        action="/upload"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="uploadForm"
+                    >
+
+                        <input
+                            type="file"
+                            name="csv_file"
+                            accept=".csv"
+                            required
+                        >
+
+                        <br><br>
+
+                        <button
+                            id="uploadBtn"
+                            type="submit"
+                            class="primary-btn">
+
+                            Upload CSV
+
+                        </button>
+                         <a href="/download_report" class="download-report-btn">
+                         <i class="fas fa-file-pdf"></i>
+                         Download Report📁
+                        </a>
+
+                    </form>
+
+                </section>
+
+                <!-- ================================= -->
+                <!-- Project Features -->
+                <!-- ================================= -->
+
+                <section class="card">
+
+                    <h2>
+
+                        ☁ Project Features
+
+                    </h2>
+
+                    <ul class="feature-list">
+
+                        <li>✅ Flask Authentication</li>
+
+                        <li>✅ AWS S3 Storage</li>
+
+                        <li>✅ AWS RDS MySQL</li>
+
+                        <li>✅ Shared sales_data Table</li>
+
+                        <li>✅ Upload History</li>
+
+                        <li>✅ Dataset Switching</li>
+
+                        <li>✅ Dashboard Filters</li>
+
+                        <li>✅ KPI Dashboard</li>
+
+                        <li>✅ Interactive Charts</li>
+
+                    </ul>
+
+                </section>
+
+                <!-- ================================= -->
+                <!-- Logout -->
+                <!-- ================================= -->
+
+                <section class="card logout-card">
+
+                    <a href="/logout">
+
+                        <button class="logout-btn">
+
+                            Logout
+
+                        </button>
+
+                    </a>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================================= -->
+<!-- Pass Dashboard Data -->
+<!-- ================================= -->
+
+<script>
+
+const salesLabels = {{ sales_labels | tojson | safe }};
+
+const salesValues = {{ sales_values | tojson | safe }};
+
+const categoryLabels = {{ category_labels | tojson | safe }};
+
+const categoryValues = {{ category_values | tojson | safe }};
+
+const monthlyLabels = {{ monthly_labels | tojson | safe }};
+
+const monthlyValues = {{ monthly_values | tojson | safe }};
+
+const dashboardFilters = {
+
+    category: "{{ selected_category }}",
+
+    product: "{{ selected_product }}",
+
+    startDate: "{{ start_date }}",
+
+    endDate: "{{ end_date }}"
+
+};
+
+console.log("========== SALES DASHBOARD ==========");
+
+console.log(
+    "Dataset:",
+    {{ latest_upload[2] if latest_upload else 'null' }}
+);
+
+console.log(
+    "Filters:",
+    dashboardFilters
+);
+
+console.log(
+    "Sales Labels:",
+    salesLabels
+);
+
+console.log(
+    "Sales Values:",
+    salesValues
+);
+
+console.log(
+    "Category Labels:",
+    categoryLabels
+);
+
+console.log(
+    "Category Values:",
+    categoryValues
+);
+
+console.log("====================================");
+
+</script>
+
+<!-- ================================= -->
+<!-- Dashboard Script -->
+<!-- ================================= -->
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1523 @@
+/* =========================================
+   Google Font
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+
+/* =========================================
+   Reset
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+
+/* =========================================
+   Theme Variables
+========================================= */
+
+:root{
+
+    --bg:#f5f6f8;
+
+    --surface:#ffffff;
+
+    --border:#e2e5ea;
+
+    --text-primary:#1a1d29;
+
+    --text-secondary:#5b6472;
+
+    --text-muted:#8a92a3;
+
+    --sidebar-bg:#1a1f2b;
+
+    --sidebar-text:#c7cbd6;
+
+    --sidebar-text-dim:#7d8494;
+
+    --accent:#3949ab;
+
+    --accent-dark:#2c3892;
+
+    --accent-light:#eef0fb;
+
+    --success-bg:#e9f7ef;
+
+    --success-border:#2f9e5c;
+
+    --success-text:#1e5c38;
+
+    --danger:#c0392b;
+
+    --danger-dark:#a4301f;
+
+    --radius:10px;
+
+    --shadow-sm:0 1px 3px rgba(16,24,40,.06);
+
+    --shadow-md:0 4px 14px rgba(16,24,40,.08);
+
+}
+
+
+/* =========================================
+   Body
+========================================= */
+
+body{
+
+    background:var(--bg);
+
+    color:var(--text-primary);
+
+}
+
+
+/* =========================================
+   Dashboard Layout
+========================================= */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+/* =========================================
+   Sidebar
+========================================= */
+
+.sidebar{
+
+    width:260px;
+
+    background:var(--sidebar-bg);
+
+    color:var(--sidebar-text);
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:30px 20px;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    border-right:1px solid rgba(255,255,255,.05);
+
+}
+
+
+.logo{
+
+    margin-bottom:50px;
+
+}
+
+
+.logo h2{
+
+    color:#ffffff;
+
+    font-size:21px;
+
+    font-weight:600;
+
+    margin-bottom:6px;
+
+    letter-spacing:.2px;
+
+}
+
+
+.logo p{
+
+    color:var(--sidebar-text-dim);
+
+    font-size:13px;
+
+}
+
+
+/* =========================================
+   Sidebar Menu
+========================================= */
+
+.menu{
+
+    list-style:none;
+
+}
+
+
+.menu li{
+
+    padding:13px 16px;
+
+    margin-bottom:6px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:background .2s ease, color .2s ease;
+
+    font-size:14.5px;
+
+    font-weight:500;
+
+    color:var(--sidebar-text);
+
+}
+
+
+.menu li:hover{
+
+    background:rgba(255,255,255,.06);
+
+    color:#ffffff;
+
+}
+
+
+.menu .active{
+
+    background:var(--accent);
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================
+   Main Content
+========================================= */
+
+.main-content{
+
+    flex:1;
+
+    margin-left:260px;
+
+    padding:35px;
+
+}
+
+
+/* =========================================
+   Header
+========================================= */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+
+.topbar h1{
+
+    font-size:26px;
+
+    font-weight:600;
+
+    color:var(--text-primary);
+
+    letter-spacing:-.2px;
+
+}
+
+
+.topbar p{
+
+    margin-top:6px;
+
+    color:var(--text-secondary);
+
+    font-size:14px;
+
+}
+
+
+/* =========================================
+   User Profile
+========================================= */
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+.avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:var(--accent);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:17px;
+
+    font-weight:600;
+
+}
+
+
+/* =========================================
+   Success Box
+========================================= */
+
+.success-box{
+
+    background:var(--success-bg);
+
+    border-left:4px solid var(--success-border);
+
+    padding:16px 20px;
+
+    border-radius:var(--radius);
+
+    margin-bottom:30px;
+
+    color:var(--success-text);
+
+    font-size:14.5px;
+
+}
+
+
+/* =========================================
+   Grid Layout
+========================================= */
+
+.content-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:22px;
+
+}
+
+
+.left-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+}
+
+
+.right-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+}
+/* =========================================
+   Card
+========================================= */
+
+.card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:24px;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:box-shadow .2s ease;
+
+}
+
+.card:hover{
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.card h2{
+
+    margin-bottom:18px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:var(--text-primary);
+
+}
+
+
+/* =========================================
+   KPI Cards
+========================================= */
+
+.kpi-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
+
+    margin-bottom:30px;
+
+}
+
+.kpi-card{
+
+    background:var(--surface);
+
+    color:var(--text-primary);
+
+    border:1px solid var(--border);
+
+    border-left:4px solid var(--accent);
+
+    border-radius:var(--radius);
+
+    padding:22px;
+
+    text-align:left;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:box-shadow .2s ease, transform .2s ease;
+
+}
+
+.kpi-card:hover{
+
+    box-shadow:var(--shadow-md);
+
+    transform:translateY(-2px);
+
+}
+
+.kpi-card h3{
+
+    font-size:13.5px;
+
+    font-weight:500;
+
+    color:var(--text-secondary);
+
+    margin-bottom:14px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.4px;
+
+}
+
+.kpi-card h2{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+
+/* =========================================
+   Charts
+========================================= */
+
+.chart-container{
+
+    width:100%;
+
+    height:420px;
+
+    position:relative;
+
+}
+
+
+/* =========================================
+   Tables
+========================================= */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+table thead{
+
+    background:var(--accent-light);
+
+    color:var(--accent-dark);
+
+}
+
+table th{
+
+    padding:14px 16px;
+
+    text-align:left;
+
+    font-weight:600;
+
+    font-size:13.5px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.3px;
+
+}
+
+table td{
+
+    padding:13px 16px;
+
+    border-bottom:1px solid var(--border);
+
+    font-size:14.5px;
+
+    color:var(--text-primary);
+
+}
+
+table tbody tr{
+
+    transition:background .2s ease;
+
+}
+
+table tbody tr:hover{
+
+    background:#f8f9fc;
+
+}
+
+
+/* =========================================
+   Information Table
+========================================= */
+
+.info-table th{
+
+    width:35%;
+
+    background:#f8f9fb;
+
+    color:var(--text-secondary);
+
+    font-weight:600;
+
+}
+
+.info-table td{
+
+    background:var(--surface);
+
+}
+
+
+/* =========================================
+   Feature List
+========================================= */
+
+.feature-list{
+
+    list-style:none;
+
+}
+
+.feature-list li{
+
+    padding:10px 0;
+
+    border-bottom:1px solid var(--border);
+
+    font-size:14.5px;
+
+    color:var(--text-primary);
+
+}
+
+.feature-list li:last-child{
+
+    border-bottom:none;
+
+}
+/* =========================================
+   Upload Form
+========================================= */
+
+input[type="file"]{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1.5px dashed #c3c9d4;
+
+    border-radius:var(--radius);
+
+    background:#fafbfc;
+
+    cursor:pointer;
+
+    transition:border-color .2s ease, background .2s ease;
+
+    font-size:14px;
+
+    color:var(--text-secondary);
+
+}
+
+input[type="file"]:hover{
+
+    background:var(--accent-light);
+
+    border-color:var(--accent);
+
+}
+
+
+/* =========================================
+   Buttons
+========================================= */
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:var(--accent);
+
+    color:white;
+
+    font-size:14.5px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:background .2s ease;
+
+}
+
+button:hover{
+
+    background:var(--accent-dark);
+
+}
+
+
+/* =========================================
+   Logout Button
+========================================= */
+
+.logout-btn{
+
+    background:transparent;
+
+    color:var(--danger);
+
+    border:1px solid var(--danger);
+
+}
+
+.logout-btn:hover{
+
+    background:var(--danger);
+
+    color:#ffffff;
+
+}
+
+
+/* =========================================
+   Links
+========================================= */
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+
+/* =========================================
+   Scrollbar
+========================================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#eef0f3;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#b9c0cc;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#9aa3b2;
+
+}
+
+
+/* =========================================
+   Fade Animation
+========================================= */
+
+.card,
+.kpi-card,
+.success-box{
+
+    animation:fadeIn .35s ease-out;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(8px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* =========================================
+   Responsive Design
+========================================= */
+
+@media(max-width:1200px){
+
+    .content-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:992px){
+
+    .sidebar{
+
+        width:220px;
+
+    }
+
+    .main-content{
+
+        margin-left:220px;
+
+        padding:25px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .dashboard{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar{
+
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+    }
+
+    .main-content{
+
+        margin-left:0;
+
+        padding:20px;
+
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .kpi-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .chart-container{
+
+        height:320px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .topbar h1{
+
+        font-size:22px;
+
+    }
+
+    .card{
+
+        padding:18px;
+
+    }
+
+    .kpi-card h2{
+
+        font-size:24px;
+
+    }
+
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+}
+
+/* =========================================
+   KPI Section Titles
+========================================= */
+
+.section-title{
+
+    margin-top:25px;
+
+    margin-bottom:15px;
+
+    color:var(--text-primary);
+
+    font-size:19px;
+
+    font-weight:600;
+
+}
+
+/* =========================================
+   Performance Summary
+========================================= */
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:16px;
+
+}
+
+.summary-item{
+
+    background:#fafbfc;
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:16px 18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:box-shadow .2s ease;
+
+}
+
+.summary-item:hover{
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.summary-label{
+
+    font-weight:500;
+
+    color:var(--text-secondary);
+
+    font-size:14px;
+
+}
+
+.summary-value{
+
+    font-weight:700;
+
+    color:var(--accent);
+
+    text-align:right;
+
+}
+/* =========================================
+   Compare Page
+========================================= */
+
+select{
+
+    width:100%;
+
+    padding:11px;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    font-size:14.5px;
+
+    margin-top:8px;
+
+    color:var(--text-primary);
+
+    background:var(--surface);
+
+}
+
+/* =========================================
+   Dashboard Filters
+========================================= */
+
+.filter-form{
+
+    width:100%;
+
+}
+
+.filter-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
+
+    margin-bottom:25px;
+
+}
+
+.filter-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.filter-group label{
+
+    font-size:13.5px;
+
+    font-weight:600;
+
+    color:var(--text-secondary);
+
+    margin-bottom:8px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.3px;
+
+}
+
+.filter-group select,
+.filter-group input{
+
+    width:100%;
+
+    padding:11px 14px;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    font-size:14.5px;
+
+    background:var(--surface);
+
+    color:var(--text-primary);
+
+    transition:border-color .2s ease, box-shadow .2s ease;
+
+}
+
+.filter-group select:focus,
+.filter-group input:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+    box-shadow:0 0 0 3px rgba(57,73,171,.12);
+
+}
+
+.filter-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.filter-buttons button{
+
+    width:auto;
+
+    min-width:160px;
+
+}
+
+.secondary-btn{
+
+    background:transparent;
+
+    color:var(--text-secondary);
+
+    border:1px solid var(--border);
+
+}
+
+.secondary-btn:hover{
+
+    background:#f1f2f5;
+
+    color:var(--text-primary);
+
+}
+
+.filter-summary{
+
+    margin-top:20px;
+
+    padding:16px 18px;
+
+    border-radius:var(--radius);
+
+    background:var(--accent-light);
+
+    border-left:4px solid var(--accent);
+
+}
+
+.filter-summary h3{
+
+    margin-bottom:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:var(--accent-dark);
+
+}
+
+.filter-summary p{
+
+    margin:5px 0;
+
+    color:var(--text-secondary);
+
+    font-size:14px;
+
+}
+/* ==========================================
+   Authentication Pages
+========================================== */
+
+.auth-page{
+
+    margin:0;
+
+    padding:0;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#EEF4FF,#DCE9FF);
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.auth-container{
+
+    width:100%;
+
+    max-width:500px;
+
+    padding:30px;
+
+}
+
+.auth-card{
+
+    background:#FFFFFF;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
+
+}
+
+.auth-logo{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.auth-logo h1{
+
+    color:#2563EB;
+
+    font-size:32px;
+
+    margin-bottom:10px;
+
+}
+
+.auth-logo p{
+
+    color:#6B7280;
+
+    font-size:15px;
+
+}
+
+.auth-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+}
+
+.auth-header h2{
+
+    font-size:28px;
+
+    color:#111827;
+
+    margin-bottom:8px;
+
+}
+
+.auth-header p{
+
+    color:#6B7280;
+
+    font-size:15px;
+
+}
+
+.form-group{
+
+    margin-bottom:22px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:#374151;
+
+}
+
+.form-group input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid #D1D5DB;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    box-sizing:border-box;
+
+}
+
+.form-group input:focus{
+
+    outline:none;
+
+    border-color:#2563EB;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+.auth-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:15px;
+
+    font-size:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+.auth-footer{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+.auth-footer p{
+
+    color:#6B7280;
+
+}
+
+.auth-footer a{
+
+    color:#2563EB;
+
+    font-weight:600;
+
+    text-decoration:none;
+
+}
+
+.auth-footer a:hover{
+
+    text-decoration:underline;
+
+}
+
+@media(max-width:600px){
+
+    .auth-container{
+
+        padding:15px;
+
+    }
+
+    .auth-card{
+
+        padding:25px;
+
+    }
+
+}
+/* ==========================================
+   Password Toggle
+========================================== */
+
+.password-box{
+
+    position:relative;
+
+}
+
+.password-box input{
+
+    width:100%;
+
+    padding-right:55px;
+
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    top:50%;
+
+    right:10px;
+
+    transform:translateY(-50%);
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    color:#6B7280;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.toggle-password:hover{
+
+    color:#2563EB;
+
+    background:none;
+
+    transform:translateY(-50%);
+
+}
+/* ==========================================
+   Download Report Button
+========================================== */
+
+.download-report-btn{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:12px;
+
+    padding:14px;
+
+    background:#dc2626;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    border-radius:10px;
+
+    transition:.25s;
+
+    box-shadow:0 4px 12px rgba(220,38,38,.25);
+
+}
+
+.download-report-btn:hover{
+
+    background:#b91c1c;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(220,38,38,.35);
+
+}
+
+.download-report-btn i{
+
+    font-size:18px;
+
+}
+/*==========================================
+   Login Alert  */
+
+.login-alert{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    margin-bottom:20px;
+    padding:14px 18px;
+    border-radius:10px;
+    font-weight:600;
+    animation:fadeDown .3s ease;
+}
+
+.login-alert.danger{
+    background:#fee2e2;
+    color:#b91c1c;
+    border-left:5px solid #dc2626;
+}
+
+@keyframes fadeDown{
+    from{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+/* =========================================
+   Compare Dataset Grid
+========================================= */
+
+.compare-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+
+    margin-top:20px;
+
+}   
+
+/* =========================================
+   Responsive Filter Layout
+========================================= */
+
+@media(max-width:768px){
+
+    .filter-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .filter-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .filter-buttons button{
+
+        width:100%;
+
+    }
+
+}

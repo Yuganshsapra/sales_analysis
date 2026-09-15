@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dataset Preview</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================================= -->
+    <!-- Sidebar -->
+    <!-- ================================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>📊 Sales Dashboard</h2>
+
+            <p>Cloud Analytics</p>
+
+        </div>
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="/dashboard">
+
+                    📈 Dashboard
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="/preview">
+
+                    📄 Dataset Preview
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/history">
+
+                    📁 My Datasets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    🚪 Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ================================= -->
+    <!-- Main Content -->
+    <!-- ================================= -->
+
+    <div class="main-content">
+
+        <!-- ================================= -->
+        <!-- Header -->
+        <!-- ================================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Dataset Preview</h1>
+
+                <p>
+
+                    Preview uploaded sales data with pagination
+
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">
+
+                    {{ session["user"][0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+
+                        {{ session["user"] }}
+
+                    </strong>
+
+                    <br>
+
+                    <small>
+
+                        Logged In
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ================================= -->
+        <!-- Dataset Information -->
+        <!-- ================================= -->
+
+        <section class="card">
+
+            <h2>📁 Dataset Information</h2>
+
+            {% if dataset %}
+
+            <table class="info-table">
+
+                <tr>
+
+                    <th>
+
+                        File Name
+
+                    </th>
+
+                    <td>
+
+                        {{ dataset[0] }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Dataset ID
+
+                    </th>
+
+                    <td>
+
+                        {{ dataset[1] }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Uploaded On
+
+                    </th>
+
+                    <td>
+
+                        {{ dataset[2] }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Total Rows
+
+                    </th>
+
+                    <td>
+
+                        {{ "{:,}".format(total_rows) }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Current Page
+
+                    </th>
+
+                    <td>
+
+                        {{ page }} of {{ total_pages }}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            {% endif %}
+
+        </section>
+
+        <!-- ================================= -->
+        <!-- Preview Table -->
+        <!-- ================================= -->
+
+        <section class="card">
+
+            <h2>
+
+                📄 Dataset Preview
+
+            </h2>
+                        {% if preview_data %}
+
+            <div style="overflow-x:auto;">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Order ID</th>
+
+                            <th>Order Date</th>
+
+                            <th>Product</th>
+
+                            <th>Category</th>
+
+                            <th>Quantity</th>
+
+                            <th>Sales</th>
+
+                            <th>Profit</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for row in preview_data %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ row[0] }}
+
+                            </td>
+
+                            <td>
+
+                                {{ row[1] }}
+
+                            </td>
+
+                            <td>
+
+                                {{ row[2] }}
+
+                            </td>
+
+                            <td>
+
+                                {{ row[3] }}
+
+                            </td>
+
+                            <td>
+
+                                {{ row[4] }}
+
+                            </td>
+
+                            <td>
+
+                                ₹ {{ "{:,.2f}".format(row[5]) }}
+
+                            </td>
+
+                            <td>
+
+                                ₹ {{ "{:,.2f}".format(row[6]) }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="success-box">
+
+                <h3>No Data Found</h3>
+
+                <p>
+
+                    The selected dataset does not contain any records.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- ================================= -->
+        <!-- Pagination -->
+        <!-- ================================= -->
+
+        <section class="card">
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    flex-wrap:wrap;
+                    gap:15px;
+                "
+            >
+
+                <div>
+
+                    Showing
+
+                    <strong>
+
+                        {{ ((page-1)*20)+1 }}
+
+                    </strong>
+
+                    to
+
+                    <strong>
+
+                        {{ [page*20,total_rows]|min }}
+
+                    </strong>
+
+                    of
+
+                    <strong>
+
+                        {{ total_rows }}
+
+                    </strong>
+
+                    records
+
+                </div>
+
+                <div
+                    style="
+                        display:flex;
+                        gap:10px;
+                    "
+                >
+
+                    {% if page > 1 %}
+
+                    <a href="/preview?page={{ page-1 }}">
+
+                        <button
+                            class="primary-btn"
+                            style="width:auto;padding:12px 25px;"
+                        >
+
+                            ⬅ Previous
+
+                        </button>
+
+                    </a>
+
+                    {% endif %}
+                                        {% if page < total_pages %}
+
+                    <a href="/preview?page={{ page+1 }}">
+
+                        <button
+                            class="primary-btn"
+                            style="width:auto;padding:12px 25px;"
+                        >
+
+                            Next ➡
+
+                        </button>
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <br>
+
+            <div
+                style="
+                    display:flex;
+                    gap:15px;
+                    flex-wrap:wrap;
+                "
+            >
+
+                <a href="/dashboard">
+
+                    <button
+                        class="primary-btn"
+                        style="width:auto;padding:12px 30px;"
+                    >
+
+                        📊 Back to Dashboard
+
+                    </button>
+
+                </a>
+
+                <a href="/history">
+
+                    <button
+                        class="secondary-btn"
+                        style="width:auto;padding:12px 30px;"
+                    >
+
+                        📁 My Datasets
+
+                    </button>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

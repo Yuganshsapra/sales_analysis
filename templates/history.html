@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dataset History</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= Sidebar ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>📊 Sales Dashboard</h2>
+
+            <p>Cloud Analytics</p>
+
+        </div>
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="/dashboard">
+
+                    📈 Dashboard
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="/history">
+
+                    📁 My Datasets
+
+                </a>
+
+            </li>
+             <li>
+
+                <a href="/compare">
+
+                    📊 Compare Datasets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    🚪 Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ================= Main ================= -->
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <h1>Uploaded Datasets</h1>
+
+            <p>Open or delete previously uploaded datasets.</p>
+
+        </header>
+
+        <div class="card">
+
+            {% if datasets %}
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Dataset ID</th>
+
+                        <th>File Name</th>
+
+                        <th>Total Rows</th>
+
+                        <th>Total Columns</th>
+
+                        <th>Uploaded By</th>
+
+                        <th>Upload Time</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for data in datasets %}
+
+                    <tr>
+
+                        <td>{{ data[2] }}</td>
+
+                        <td>{{ data[1] }}</td>
+
+                        <td>{{ data[3] }}</td>
+
+                        <td>{{ data[4] }}</td>
+
+                        <td>{{ session["user"] }}</td>
+
+                        <td>{{ data[5] }}</td>
+
+                        <td>
+
+                            <a href="/open_dataset/{{ data[0] }}">
+
+    <button class="primary-btn">
+
+        📂 Open
+
+    </button>
+
+</a>
+
+<a href="/preview/{{ data[0] }}">
+
+    <button class="secondary-btn">
+
+        👁 Preview
+
+    </button>
+
+</a>
+
+<a href="/delete_dataset/{{ data[0] }}">
+
+    <button class="logout-btn">
+
+        🗑 Delete
+
+    </button>
+
+</a>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+                <div style="text-align:center;padding:50px;">
+
+                    <h2>No Datasets Found</h2>
+
+                    <p>Upload your first CSV file to get started.</p>
+
+                    <a href="/dashboard">
+
+                        <button class="primary-btn">
+
+                            Upload Dataset
+
+                        </button>
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
